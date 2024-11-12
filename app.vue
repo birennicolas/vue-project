@@ -1,77 +1,41 @@
-<script>
-  export default {
-    data () {
-      return {
-        desserts: [
-          {
-            name: 'Frozen Yogurt',
-            calories: 159,
-          },
-          {
-            name: 'Ice cream sandwich',
-            calories: 237,
-          },
-          {
-            name: 'Eclair',
-            calories: 262,
-          },
-          {
-            name: 'Cupcake',
-            calories: 305,
-          },
-          {
-            name: 'Gingerbread',
-            calories: 356,
-          },
-          {
-            name: 'Jelly bean',
-            calories: 375,
-          },
-          {
-            name: 'Lollipop',
-            calories: 392,
-          },
-          {
-            name: 'Honeycomb',
-            calories: 408,
-          },
-          {
-            name: 'Donut',
-            calories: 452,
-          },
-          {
-            name: 'KitKat',
-            calories: 518,
-          },
-        ],
-      }
-    },
-  }
+<script setup>
+import { ref, onMounted } from 'vue'
+
+const users = ref([])
+
+const fetchPosts = async () => { 
+  const response = await fetch('https://jsonplaceholder.typicode.com/users')
+  users.value = await response.json()
+  console.log(users.value);
+} 
+
+onMounted(() => {
+  fetchPosts()
+})
 </script>
 
 <template>
   <v-app>
-    <v-table>
-    <thead>
-      <tr>
-        <th class="text-left">
-          Name
-        </th>
-        <th class="text-left">
-          Calories
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="item in desserts"
-        :key="item.name"
-      >
-        <td>{{ item.name }}</td>
-        <td>{{ item.calories }}</td>
-      </tr>
-    </tbody>
-  </v-table>
-    </v-app>
-
+    <v-table density="compact"
+    fixed-header>
+      <thead>
+        <tr>
+          <th class="text-left">User ID</th>
+          <th class="text-left">ID</th>
+          <th class="text-left">username</th>
+          <th class="text-left">email</th>
+          <th class="text-left">website</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="user in users" :key="user.userId">
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.website }}</td>
+        </tr>
+      </tbody>
+    </v-table>
+  </v-app>
 </template>
