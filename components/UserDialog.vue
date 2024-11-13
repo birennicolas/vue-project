@@ -1,20 +1,21 @@
-<script setup>
-defineProps({
-  maxWidth: {
-    type: Number,
-    default: 800
-  },
-  comments: {
-    type: Array,
-    default: () => []
-  },
-  isOpen: {
-    type: Boolean,
-    default: false
-  }
-});
+<script setup lang="ts">
+interface Comment {
+  name: string;
+  email: string;
+  body: string;
+}
 
-const emit = defineEmits(['update:isOpen']);
+interface Props {
+  maxWidth?: number;
+  comments: Comment[];
+  isOpen: boolean;
+}
+
+defineProps<Props>();
+
+const emit = defineEmits<{
+  'update:isOpen': [value: boolean]
+}>();
 
 const closeDialog = () => {
   emit('update:isOpen', false);

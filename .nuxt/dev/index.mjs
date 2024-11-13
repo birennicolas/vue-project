@@ -180,7 +180,7 @@ const _r3lAfT3cpV = (function(nitro) {
 
 const rootDir = "/Users/laetitiavanderveken/Desktop/vue-project";
 
-const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"}],"link":[],"style":[],"script":[],"noscript":[]};
+const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"}],"link":[{"rel":"stylesheet","href":"https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"}],"style":[],"script":[],"noscript":[]};
 
 const appRootTag = "div";
 
