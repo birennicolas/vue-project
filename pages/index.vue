@@ -73,7 +73,7 @@ onMounted(() => {
                 key === "company" && typeof value === 'object' && 'name' in value
                   ? value.name
                   : key === "address" && typeof value === 'object' && 'street' in value
-                  ? `${value.street}\n${value.suite}\n${value.city}, ${value.zipcode}`
+                  ? `${value.street},\n${value.suite},\n${value.city}, ${value.zipcode}`
                   : value
               }}
             </td>

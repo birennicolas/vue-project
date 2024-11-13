@@ -157,7 +157,7 @@ onMounted(() => {
             <v-skeleton-loader
               v-for="n in 5"
               :key="n"
-              type="table-row-divider"
+              type="table-row"
               class="pa-4"
             ></v-skeleton-loader>
           </template>
