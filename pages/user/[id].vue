@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import UserDialog from '~/components/UserDialog.vue';
-import { userService } from '~/services/api/users';
+import UserDialog from "~/components/UserDialog";
+import { userService } from "~/services/api/users";
 
 const route = useRoute();
 const userId = route.params.id;
@@ -11,27 +11,38 @@ const userPosts = ref([]);
 const search = ref("");
 const selectedComments = ref([]);
 const isDialogOpen = ref(false);
+const loading = ref(true);
 
 const router = useRouter();
 
 const fetchUserData = async () => {
-  userData.value = await userService.getUser(userId);
+  try {
+    loading.value = true;
+    userData.value = await userService.getUser(userId);
+  } finally {
+    loading.value = false;
+  }
 };
 
 const fetchUserPosts = async () => {
-  const posts = await userService.getUserPosts(userId);
-  
-  const postsWithComments = await Promise.all(
-    posts.map(async (post) => {
-      const comments = await userService.getPostComments(post.id);
-      return {
-        ...post,
-        commentsCount: comments.length
-      };
-    })
-  );
-  
-  userPosts.value = postsWithComments;
+  try {
+    loading.value = true;
+    const posts = await userService.getUserPosts(userId);
+
+    const postsWithComments = await Promise.all(
+      posts.map(async (post) => {
+        const comments = await userService.getPostComments(post.id);
+        return {
+          ...post,
+          commentsCount: comments.length,
+        };
+      })
+    );
+
+    userPosts.value = postsWithComments;
+  } finally {
+    loading.value = false;
+  }
 };
 
 const fetchPostComments = async (postId) => {
@@ -66,63 +77,87 @@ onMounted(() => {
 
 <template>
   <div class="userposts-background">
-    <v-btn
-      class="ma-4"
-      prepend-icon="mdi-arrow-left"
-      @click="goBack"
-    >
-      Go back
-    </v-btn>
-    <UserDialog 
+    <div class="header-container">
+      <v-btn class="ma-4" prepend-icon="mdi-arrow-left" @click="goBack">
+        Go back
+      </v-btn>
+      <v-text-field
+        v-model="search"
+        label="Search Posts"
+        prepend-inner-icon="mdi-magnify"
+        variant="outlined"
+        width="90%"
+        max-width="1250"
+        hide-details
+        single-line
+        class="search-field"
+      ></v-text-field>
+    </div>
+    <UserDialog
       :max-width="800"
       :comments="selectedComments"
       v-model:isOpen="isDialogOpen"
     />
     <v-card
-      class="mx-auto my-4"
+      class="mx-auto my-4 d-flex flex-column align-center justify-center"
       elevation="16"
       width="90%"
       height="90%"
-      maxwidth="1250"
+      max-width="1250"
       max-height="600"
       rounded="lg"
-      v-if="userData"
       flat
     >
-      <div class="fixed-content">
+      <div>
         <div class="d-flex align-center justify-center my-4">
-          <v-avatar color="red" size="60">
-            <span class="text-h5">{{ userInitials }}</span>
-          </v-avatar>
-          <v-card-title> {{ userData.name }}'s posts</v-card-title>
+          <template v-if="!loading">
+            <v-avatar color="red" size="60">
+              <span class="text-h5">{{ userInitials }}</span>
+            </v-avatar>
+            <v-card-title>{{ userData.name }}'s posts</v-card-title>
+          </template>
+          <template v-else>
+            <v-skeleton-loader
+              type="avatar"
+              size="60"
+              class="ma-2"
+            ></v-skeleton-loader>
+            <v-skeleton-loader
+              type="text"
+              width="200"
+              class="ma-2"
+            ></v-skeleton-loader>
+          </template>
         </div>
-
-        <v-text-field
-          v-model="search"
-          label="Search Posts"
-          prepend-inner-icon="mdi-magnify"
-          variant="outlined"
-          hide-details
-          single-line
-          class="mx-4 mb-4"
-        ></v-text-field>
       </div>
 
       <div class="table-container">
         <v-data-table
           :items="userPosts"
           :search="search"
+          :loading="loading"
+          fixed-header
+          class="bold-headers"
           :headers="[
             { title: 'Title', key: 'title' },
             { title: 'Body', key: 'body' },
-            { 
+            {
               title: 'Comments',
               key: 'commentsCount',
               align: 'center',
-              sortable: true
+              sortable: true,
             },
           ]"
         >
+          <template v-slot:loading>
+            <v-skeleton-loader
+              v-for="n in 5"
+              :key="n"
+              type="table-row-divider"
+              class="pa-4"
+            ></v-skeleton-loader>
+          </template>
+
           <template v-slot:item.commentsCount="{ item }">
             <v-chip
               color="primary"
@@ -139,5 +174,6 @@ onMounted(() => {
 </template>
 
 <style>
-@import '@/assets/styles/UserPosts.css';
+@import "@/assets/styles/main.css";
+@import "@/assets/styles/UserPosts.css";
 </style>

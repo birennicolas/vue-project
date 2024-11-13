@@ -27,6 +27,7 @@ const closeDialog = () => {
     <v-card title="Post comments">
       <v-data-table
         :items="comments"
+        class="bold-headers"
         :headers="[
           { title: 'Name', key: 'name' },
           { title: 'Email', key: 'email' },

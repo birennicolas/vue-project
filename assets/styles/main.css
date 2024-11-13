@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.bold-headers th {
+    font-weight: bold !important;
+    background-color: #8d8989 !important;
+    color: white !important;
+} 
+
+.bold-headers thead {
+    border-radius: 10px;
+} 

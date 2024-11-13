@@ -6,9 +6,15 @@ import { userService } from "~/services/api/users";
 const router = useRouter();
 const users = ref([]);
 const search = ref("");
+const loading = ref(true);
 
 const fetchUsers = async () => {
-  users.value = await userService.getUsers();
+  try {
+    loading.value = true;
+    users.value = await userService.getUsers();
+  } finally {
+    loading.value = false;
+  }
 };
 
 const handleUserClick = (item) => {
@@ -31,7 +37,7 @@ onMounted(() => {
           max-width="1250"
           hide-details
           single-line
-          class="search-field"
+          class="search-users-field"
         ></v-text-field>
 
     <v-card
@@ -50,7 +56,17 @@ onMounted(() => {
         height="500px"
         fixed-header
         class="bold-headers"
+        :loading="loading"
       >
+        <template v-slot:loading>
+          <v-skeleton-loader
+            v-for="n in 10"
+            :key="n"
+            type="table-row"
+            class="pa-4"
+          ></v-skeleton-loader>
+        </template>
+
         <template v-slot:item="{ item }">
           <tr @click="handleUserClick(item)" class="table-row">
             <td v-for="(value, key) in item" :key="key">
@@ -70,16 +86,6 @@ onMounted(() => {
 </template>
 
 <style>
+@import "@/assets/styles/main.css";
 @import "@/assets/styles/UserList.css";
-
-.search-field {
-  background-color: white;
-  margin-top: 16px;
-}
-
-.bold-headers th {
-  font-weight: bold !important;
-  background-color: #8d8989 !important; /* dark grey background */
-  color: white !important;
-}
 </style>
