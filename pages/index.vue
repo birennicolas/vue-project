@@ -27,18 +27,19 @@ onMounted(() => {
 
 <template>
   <div class="userslist-background">
-        <v-text-field
-          v-model="search"
-          label="Search"
-          prepend-inner-icon="mdi-magnify"
-          variant="outlined"
-          width="95%"
-          max-width="1250"
-          hide-details
-          single-line
-          class="search-users-field"
-        ></v-text-field>
-
+    <div class="search-container">
+      <v-text-field
+        v-model="search"
+        label="Search"
+        prepend-inner-icon="mdi-magnify"
+        variant="outlined"
+        width="95%"
+        max-width="1250"
+        hide-details
+        single-line
+        class="search-users-field"
+      />
+    </div>
     <v-card
       class="mx-auto my-8"
       elevation="16"
@@ -47,14 +48,13 @@ onMounted(() => {
       max-width="1250"
       max-height="700"
       rounded="lg"
-      style="overflow: auto"
+      style="overflow: auto; display: flex; flex-direction: column"
     >
       <v-data-table
         :items="users"
         :search="search"
-        height="500px"
         fixed-header
-        class="bold-headers"
+        class="bold-headers flex-grow-1"
         :loading="loading"
       >
         <template v-slot:loading>
@@ -70,9 +70,13 @@ onMounted(() => {
           <tr @click="handleUserClick(item)" class="table-row">
             <td v-for="(value, key) in item" :key="key">
               {{
-                key === "company" && typeof value === 'object' && 'name' in value
+                key === "company" &&
+                typeof value === "object" &&
+                "name" in value
                   ? value.name
-                  : key === "address" && typeof value === 'object' && 'street' in value
+                  : key === "address" &&
+                    typeof value === "object" &&
+                    "street" in value
                   ? `${value.street},\n${value.suite},\n${value.city}, ${value.zipcode}`
                   : value
               }}
