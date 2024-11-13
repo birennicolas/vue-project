@@ -27,8 +27,8 @@ onMounted(() => {
   <v-card
     class="mx-auto my-8"
     elevation="16"
-    max-width="1250"
-    max-height="700"
+    width="1250"
+    height="700"
     rounded="lg"
     style="overflow: auto"
   >
@@ -50,7 +50,7 @@ onMounted(() => {
       fixed-header
     >
       <template v-slot:item="{ item }">
-        <tr @click="handleUserClick(item)" style="cursor: pointer">
+        <tr @click="handleUserClick(item)" class="table-row">
           <td v-for="(value, key) in item" :key="key">
             {{ value }}
           </td>
@@ -62,9 +62,18 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.table-row {
+  cursor: pointer;
+}
+.table-row:hover {
+  background-color: #f5f5f5;  /* Light grey */
+}
 .gradient-background {
-  min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+  height: 100vh;
   background: linear-gradient(145deg, #f0f0f0 0%, #d4d4d4 100%);
-  padding: 20px;
 }
 </style>
