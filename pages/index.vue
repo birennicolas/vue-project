@@ -1,10 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
 import { userService } from "~/services/api/users";
+import type { User } from "~/services/api/users";
 
-const router = useRouter();
-const users = ref([]);
+const users = ref<User[]>([]);
 const search = ref("");
 const loading = ref(true);
 
@@ -17,8 +16,8 @@ const fetchUsers = async () => {
   }
 };
 
-const handleUserClick = (item) => {
-  router.push(`/user/${item.id}`);
+const handleUserClick = async (item: User) => {
+  await navigateTo(`/user/${item.id}`);
 };
 
 onMounted(() => {
@@ -71,9 +70,9 @@ onMounted(() => {
           <tr @click="handleUserClick(item)" class="table-row">
             <td v-for="(value, key) in item" :key="key">
               {{
-                key === "company"
+                key === "company" && typeof value === 'object' && 'name' in value
                   ? value.name
-                  : key === "address"
+                  : key === "address" && typeof value === 'object' && 'street' in value
                   ? `${value.street}\n${value.suite}\n${value.city}, ${value.zipcode}`
                   : value
               }}

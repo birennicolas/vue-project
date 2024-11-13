@@ -1,15 +1,20 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import UserDialog from "~/components/UserDialog.vue";
-import { userService } from "~/services/api/users";
+import { userService } from "../../services/api/users";
+import type { User, Post, Comment } from "../../services/api/users";
+
+interface PostWithComments extends Post {
+  commentsCount: number;
+}
 
 const route = useRoute();
-const userId = route.params.id;
-const userData = ref(null);
-const userPosts = ref([]);
+const userId = route.params.id as string;
+const userData = ref<User | null>(null);
+const userPosts = ref<PostWithComments[]>([]);
 const search = ref("");
-const selectedComments = ref([]);
+const selectedComments = ref<Comment[]>([]);
 const isDialogOpen = ref(false);
 const loading = ref(true);
 
@@ -45,7 +50,7 @@ const fetchUserPosts = async () => {
   }
 };
 
-const fetchPostComments = async (postId) => {
+const fetchPostComments = async (postId: number): Promise<Comment[]> => {
   return await userService.getPostComments(postId);
 };
 
@@ -58,7 +63,7 @@ const userInitials = computed(() => {
     .toUpperCase();
 });
 
-const showComments = async (postId) => {
+const showComments = async (postId: number) => {
   const comments = await fetchPostComments(postId);
   selectedComments.value = comments;
   isDialogOpen.value = true;
@@ -71,7 +76,6 @@ const goBack = () => {
 onMounted(() => {
   fetchUserData();
   fetchUserPosts();
-  fetchPostComments();
 });
 </script>
 
@@ -114,7 +118,7 @@ onMounted(() => {
             <v-avatar color="red" size="60">
               <span class="text-h5">{{ userInitials }}</span>
             </v-avatar>
-            <v-card-title>{{ userData.name }}'s posts</v-card-title>
+            <v-card-title>{{ userData?.name }}'s posts</v-card-title>
           </template>
           <template v-else>
             <v-skeleton-loader
