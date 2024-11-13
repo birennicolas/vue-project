@@ -41,21 +41,22 @@ onMounted(() => {
       />
     </div>
     <v-card
-      class="mx-auto my-8"
+      class="mx-auto my-8 d-flex flex-column"
       elevation="16"
       width="95%"
       height="90%"
       max-width="1250"
       max-height="700"
       rounded="lg"
-      style="overflow: auto; display: flex; flex-direction: column"
     >
       <v-data-table
         :items="users"
         :search="search"
         fixed-header
+        fixed-footer
         class="bold-headers flex-grow-1"
         :loading="loading"
+        style="height: 100%"
       >
         <template v-slot:loading>
           <v-skeleton-loader

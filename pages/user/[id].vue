@@ -112,27 +112,25 @@ onMounted(() => {
       rounded="lg"
       flat
     >
-      <div>
-        <div class="d-flex align-center justify-center my-4">
-          <template v-if="!loading">
-            <v-avatar color="red" size="60">
-              <span class="text-h5">{{ userInitials }}</span>
-            </v-avatar>
-            <v-card-title>{{ userData?.name }}'s posts</v-card-title>
-          </template>
-          <template v-else>
-            <v-skeleton-loader
-              type="avatar"
-              size="60"
-              class="ma-2"
-            ></v-skeleton-loader>
-            <v-skeleton-loader
-              type="text"
-              width="200"
-              class="ma-2"
-            ></v-skeleton-loader>
-          </template>
-        </div>
+      <div class="d-flex align-center justify-center my-4">
+        <template v-if="!loading">
+          <v-avatar color="red" size="60">
+            <span class="text-h5">{{ userInitials }}</span>
+          </v-avatar>
+          <v-card-title>{{ userData?.name }}'s posts</v-card-title>
+        </template>
+        <template v-else>
+          <v-skeleton-loader
+            type="avatar"
+            size="60"
+            class="ma-2"
+          ></v-skeleton-loader>
+          <v-skeleton-loader
+            type="text"
+            width="200"
+            class="ma-2"
+          ></v-skeleton-loader>
+        </template>
       </div>
 
       <div class="table-container">
