@@ -52,7 +52,11 @@ onMounted(() => {
       <template v-slot:item="{ item }">
         <tr @click="handleUserClick(item)" class="table-row">
           <td v-for="(value, key) in item" :key="key">
-            {{ value }}
+            {{ 
+              key === 'company' ? value.name : 
+              key === 'address' ? `${value.street}\n${value.suite}\n${value.city}, ${value.zipcode}` : 
+              value 
+            }}
           </td>
         </tr>
       </template>
