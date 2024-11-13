@@ -23,7 +23,7 @@ const closeDialog = () => {
 </script>
 
 <template>
-  <v-dialog :model-value="isOpen" @update:model-value="closeDialog" :max-width="maxWidth">
+  <v-dialog :model-value="isOpen" @update:model-value="closeDialog" :max-width="900" width="100%">
     <v-card title="Post comments">
       <v-data-table
         :items="comments"
@@ -33,6 +33,7 @@ const closeDialog = () => {
           { title: 'Email', key: 'email' },
           { title: 'Comment', key: 'body' }
         ]"
+        style="width: 95%; margin: auto;"
       ></v-data-table>
 
       <v-card-actions>

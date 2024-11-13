@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import UserDialog from "~/components/UserDialog";
+import UserDialog from "~/components/UserDialog.vue";
 import { userService } from "~/services/api/users";
 
 const route = useRoute();
