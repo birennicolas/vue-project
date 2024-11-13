@@ -83,7 +83,7 @@ onMounted(() => {
   <div class="userposts-background">
     <div class="header-container">
       <v-btn class="ma-4" prepend-icon="mdi-arrow-left" @click="goBack">
-        Go back
+        Back
       </v-btn>
       <v-text-field
         v-model="search"
